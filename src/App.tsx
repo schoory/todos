@@ -1,25 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+import './App.scss';
+import { TodosCard } from './components/TodosCard/TodosCard';
+import { Item } from './types';
 
 function App() {
+
+  const [items, setItems] = useState<Item[]>([]) // Список todo
+
+  // получает список todo из локального хранилища при загрузке страницы
+  useEffect(() => {
+    const items = localStorage.getItem('TODOS_ITEMS') 
+    if (items) {
+      setItems(JSON.parse(items))
+    }
+  }, [])
+
+  /**
+   * Записывает новый измененный список todo в локальное хранилище
+   * @param newItems Новый список todo
+   */
+  const itemsChanged = (newItems: Item[]) => {
+    localStorage.setItem('TODOS_ITEMS', JSON.stringify(newItems))
+    setItems(newItems)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main className="app">
+      <section className='app__title'>
+        todos
+      </section>
+      <section className='app__wrapper'>
+        <TodosCard 
+          itemsChanged={itemsChanged}
+          items={items} 
+        />
+      </section>
+    </main>
   );
 }
 

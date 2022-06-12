@@ -1,0 +1,89 @@
+@import '../../assets/styles/variables.scss';
+
+.todos-item {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 5px;
+  border-top: 1px solid $card-item-border;
+  border-bottom: 1px solid $card-item-border;
+  &__checkbox {
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    &-mark {
+      position: absolute;
+      width: 0;
+      height: 0;
+      opacity: 0;
+      &:checked ~ .todos-item__checkbox-fake {
+        border: 1px solid $checkmark-active-border;
+        &::after {
+          transform: translate(-50%, calc(-50% - 1px)) scale(1) rotate(-45deg);
+          opacity: 1;
+        }
+      }
+      &:checked ~ .todos-item__checkbox-name {
+        text-decoration: line-through;
+        color: $text-color-secondary;
+      }
+      &:hover ~ .todos-item__checkbox-fake, &:focus ~ .todos-item__checkbox-fake {
+        background: $btn-hover-background;
+      }
+    }
+    &-fake {
+      flex: none;
+      position: relative;
+      width: 32px;
+      height: 32px;
+      display: block;
+      border-radius: 100%;
+      border: 1px solid $checkmark-border;
+      transition: border .1s ease-out, background .1s ease-out;
+      &::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, calc(-50% - 1px)) scale(.8) rotate(-45deg);
+        opacity: 0;
+        width: 15px;
+        height: 9px;
+        border-bottom: 2px solid $checkmark-active-color;
+        border-left: 2px solid $checkmark-active-color;
+        transition: all .1s ease-out;
+      }
+    }
+    &-name {
+      font-size: 26px;
+      font-weight: 300;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  &__delete {
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid transparent;
+    color: $danger-primary;
+    border-radius: 5px;
+    padding: 5px;
+    transition: border .1s ease-out;
+    &:hover, &:focus {
+      outline: none;
+      border: 1px solid $danger-primary;
+    }
+    & > svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
